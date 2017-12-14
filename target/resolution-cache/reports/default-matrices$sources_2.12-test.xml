@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="ivy-report.xsl"?>
+<ivy-report version="1.0">
+	<info
+		organisation="default"
+		module="matrices$sources_2.12"
+		revision="1.0"
+		conf="test"
+		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool"
+		date="20171211222523"/>
+	<dependencies>
+		<module organisation="org.specs2" name="specs2-core_2.12">
+			<revision name="4.0.0" status="release" pubdate="20171002153209" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://specs2.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="2">
+				<license name="MIT-style" url="http://www.opensource.org/licenses/mit-license.php"/>
+				<metadata-artifact status="no" details="" size="3313" time="0" location="/Users/jasminevickery/.ivy2/cache/org.specs2/specs2-core_2.12/ivy-4.0.0.xml" searched="false" origin-is-local="false" origin-location="https://jcenter.bintray.com/org/specs2/specs2-core_2.12/4.0.0/specs2-core_2.12-4.0.0.pom"/>
+				<caller organisation="default" name="matrices$sources_2.12" conf="test, compile, runtime" rev="4.0.0" rev-constraint-default="4.0.0" rev-constraint-dynamic="4.0.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="specs2-core_2.12" type="jar" ext="jar" status="no" details="" size="1383416" time="0" location="/Users/jasminevickery/.ivy2/cache/org.specs2/specs2-core_2.12/jars/specs2-core_2.12-4.0.0.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/specs2/specs2-core_2.12/4.0.0/specs2-core_2.12-4.0.0.jar"/>
+					</artifact>
+					<artifact name="specs2-core_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="110151" time="0" location="/Users/jasminevickery/.ivy2/cache/org.specs2/specs2-core_2.12/srcs/specs2-core_2.12-4.0.0-sources.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/specs2/specs2-core_2.12/4.0.0/specs2-core_2.12-4.0.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.specs2" name="specs2-matcher_2.12">
+			<revision name="4.0.0" status="release" pubdate="20171002153210" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://specs2.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="3">
+				<license name="MIT-style" url="http://www.opensource.org/licenses/mit-license.php"/>
+				<metadata-artifact status="no" details="" size="2674" time="0" location="/Users/jasminevickery/.ivy2/cache/org.specs2/specs2-matcher_2.12/ivy-4.0.0.xml" searched="false" origin-is-local="false" origin-location="https://jcenter.bintray.com/org/specs2/specs2-matcher_2.12/4.0.0/specs2-matcher_2.12-4.0.0.pom"/>
+				<caller organisation="default" name="matrices$sources_2.12" conf="test, compile, runtime" rev="4.0.0" rev-constraint-default="4.0.0" rev-constraint-dynamic="4.0.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="specs2-matcher_2.12" type="jar" ext="jar" status="no" details="" size="1648261" time="0" location="/Users/jasminevickery/.ivy2/cache/org.specs2/specs2-matcher_2.12/jars/specs2-matcher_2.12-4.0.0.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/specs2/specs2-matcher_2.12/4.0.0/specs2-matcher_2.12-4.0.0.jar"/>
+					</artifact>
+					<artifact name="specs2-matcher_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="64500" time="0" location="/Users/jasminevickery/.ivy2/cache/org.specs2/specs2-matcher_2.12/srcs/specs2-matcher_2.12-4.0.0-sources.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/specs2/specs2-matcher_2.12/4.0.0/specs2-matcher_2.12-4.0.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.specs2" name="specs2-common_2.12">
+			<revision name="4.0.0" status="release" pubdate="20171002153223" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://specs2.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="4">
+				<license name="MIT-style" url="http://www.opensource.org/licenses/mit-license.php"/>
+				<metadata-artifact status="no" details="" size="3265" time="0" location="/Users/jasminevickery/.ivy2/cache/org.specs2/specs2-common_2.12/ivy-4.0.0.xml" searched="false" origin-is-local="false" origin-location="https://jcenter.bintray.com/org/specs2/specs2-common_2.12/4.0.0/specs2-common_2.12-4.0.0.pom"/>
+				<caller organisation="default" name="matrices$sources_2.12" conf="test, compile, runtime" rev="4.0.0" rev-constraint-default="4.0.0" rev-constraint-dynamic="4.0.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="specs2-common_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="165814" time="0" location="/Users/jasminevickery/.ivy2/cache/org.specs2/specs2-common_2.12/srcs/specs2-common_2.12-4.0.0-sources.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/specs2/specs2-common_2.12/4.0.0/specs2-common_2.12-4.0.0-sources.jar"/>
+					</artifact>
+					<artifact name="specs2-common_2.12" type="jar" ext="jar" status="no" details="" size="2105036" time="0" location="/Users/jasminevickery/.ivy2/cache/org.specs2/specs2-common_2.12/jars/specs2-common_2.12-4.0.0.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/specs2/specs2-common_2.12/4.0.0/specs2-common_2.12-4.0.0.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scalacheck" name="scalacheck_2.12">
+			<revision name="1.13.4" status="release" pubdate="20161101141622" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scalacheck.org" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="9">
+				<license name="BSD-style" url="http://www.opensource.org/licenses/bsd-license.php"/>
+				<metadata-artifact status="no" details="" size="2671" time="0" location="/Users/jasminevickery/.ivy2/cache/org.scalacheck/scalacheck_2.12/ivy-1.13.4.xml" searched="false" origin-is-local="false" origin-location="https://jcenter.bintray.com/org/scalacheck/scalacheck_2.12/1.13.4/scalacheck_2.12-1.13.4.pom"/>
+				<caller organisation="default" name="matrices$sources_2.12" conf="test, compile, runtime" rev="1.13.4" rev-constraint-default="1.13.4" rev-constraint-dynamic="1.13.4" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="scalacheck_2.12" type="jar" ext="jar" status="no" details="" size="705250" time="0" location="/Users/jasminevickery/.ivy2/cache/org.scalacheck/scalacheck_2.12/jars/scalacheck_2.12-1.13.4.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/scalacheck/scalacheck_2.12/1.13.4/scalacheck_2.12-1.13.4.jar"/>
+					</artifact>
+					<artifact name="scalacheck_2.12" type="src" ext="jar" extra-classifier="sources" status="successful" details="" size="53555" time="369" location="/Users/jasminevickery/.ivy2/cache/org.scalacheck/scalacheck_2.12/srcs/scalacheck_2.12-1.13.4-sources.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/scalacheck/scalacheck_2.12/1.13.4/scalacheck_2.12-1.13.4-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-sbt" name="test-interface">
+			<revision name="1.0" status="release" pubdate="20130628234435" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-sbt.org" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="8">
+				<license name="BSD" url="https://github.com/sbt/test-interface/blob/master/LICENSE"/>
+				<metadata-artifact status="no" details="" size="2589" time="0" location="/Users/jasminevickery/.ivy2/cache/org.scala-sbt/test-interface/ivy-1.0.xml" searched="false" origin-is-local="false" origin-location="https://jcenter.bintray.com/org/scala-sbt/test-interface/1.0/test-interface-1.0.pom"/>
+				<caller organisation="default" name="matrices$sources_2.12" conf="test, compile, runtime" rev="1.0" rev-constraint-default="1.0" rev-constraint-dynamic="1.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="test-interface" type="jar" ext="jar" status="no" details="" size="14755" time="0" location="/Users/jasminevickery/.ivy2/cache/org.scala-sbt/test-interface/jars/test-interface-1.0.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/scala-sbt/test-interface/1.0/test-interface-1.0.jar"/>
+					</artifact>
+					<artifact name="test-interface" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="18792" time="0" location="/Users/jasminevickery/.ivy2/cache/org.scala-sbt/test-interface/srcs/test-interface-1.0-sources.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/scala-sbt/test-interface/1.0/test-interface-1.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang.modules" name="scala-xml_2.12">
+			<revision name="1.0.6" status="release" pubdate="20161101142105" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="7">
+				<license name="BSD 3-clause" url="http://opensource.org/licenses/BSD-3-Clause"/>
+				<metadata-artifact status="no" details="" size="3011" time="0" location="/Users/jasminevickery/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/ivy-1.0.6.xml" searched="false" origin-is-local="false" origin-location="https://jcenter.bintray.com/org/scala-lang/modules/scala-xml_2.12/1.0.6/scala-xml_2.12-1.0.6.pom"/>
+				<caller organisation="default" name="matrices$sources_2.12" conf="test, compile, runtime" rev="1.0.6" rev-constraint-default="1.0.6" rev-constraint-dynamic="1.0.6" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="scala-xml_2.12" type="jar" ext="jar" status="no" details="" size="547860" time="0" location="/Users/jasminevickery/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/jars/scala-xml_2.12-1.0.6.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/scala-lang/modules/scala-xml_2.12/1.0.6/scala-xml_2.12-1.0.6.jar"/>
+					</artifact>
+					<artifact name="scala-xml_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="109199" time="0" location="/Users/jasminevickery/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/srcs/scala-xml_2.12-1.0.6-sources.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/scala-lang/modules/scala-xml_2.12/1.0.6/scala-xml_2.12-1.0.6-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang.modules" name="scala-parser-combinators_2.12">
+			<revision name="1.0.5" status="release" pubdate="20161216195947" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="6">
+				<license name="BSD 3-clause" url="http://opensource.org/licenses/BSD-3-Clause"/>
+				<metadata-artifact status="no" details="" size="2803" time="0" location="/Users/jasminevickery/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/ivy-1.0.5.xml" searched="false" origin-is-local="false" origin-location="https://jcenter.bintray.com/org/scala-lang/modules/scala-parser-combinators_2.12/1.0.5/scala-parser-combinators_2.12-1.0.5.pom"/>
+				<caller organisation="default" name="matrices$sources_2.12" conf="test, compile, runtime" rev="1.0.5" rev-constraint-default="1.0.5" rev-constraint-dynamic="1.0.5" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="scala-parser-combinators_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="43232" time="0" location="/Users/jasminevickery/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/srcs/scala-parser-combinators_2.12-1.0.5-sources.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/scala-lang/modules/scala-parser-combinators_2.12/1.0.5/scala-parser-combinators_2.12-1.0.5-sources.jar"/>
+					</artifact>
+					<artifact name="scala-parser-combinators_2.12" type="jar" ext="jar" status="no" details="" size="210060" time="0" location="/Users/jasminevickery/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/jars/scala-parser-combinators_2.12-1.0.5.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/scala-lang/modules/scala-parser-combinators_2.12/1.0.5/scala-parser-combinators_2.12-1.0.5.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.specs2" name="specs2-fp_2.12">
+			<revision name="4.0.0" status="release" pubdate="20171002153159" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://specs2.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="5">
+				<license name="MIT-style" url="http://www.opensource.org/licenses/mit-license.php"/>
+				<metadata-artifact status="no" details="" size="2512" time="0" location="/Users/jasminevickery/.ivy2/cache/org.specs2/specs2-fp_2.12/ivy-4.0.0.xml" searched="false" origin-is-local="false" origin-location="https://jcenter.bintray.com/org/specs2/specs2-fp_2.12/4.0.0/specs2-fp_2.12-4.0.0.pom"/>
+				<caller organisation="default" name="matrices$sources_2.12" conf="test, compile, runtime" rev="4.0.0" rev-constraint-default="4.0.0" rev-constraint-dynamic="4.0.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="specs2-fp_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="16369" time="0" location="/Users/jasminevickery/.ivy2/cache/org.specs2/specs2-fp_2.12/srcs/specs2-fp_2.12-4.0.0-sources.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/specs2/specs2-fp_2.12/4.0.0/specs2-fp_2.12-4.0.0-sources.jar"/>
+					</artifact>
+					<artifact name="specs2-fp_2.12" type="jar" ext="jar" status="no" details="" size="217291" time="0" location="/Users/jasminevickery/.ivy2/cache/org.specs2/specs2-fp_2.12/jars/specs2-fp_2.12-4.0.0.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/specs2/specs2-fp_2.12/4.0.0/specs2-fp_2.12-4.0.0.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang" name="scala-reflect">
+			<revision name="2.12.4" status="release" pubdate="20171011082224" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.12.4/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="1">
+				<license name="BSD 3-Clause" url="http://www.scala-lang.org/license.html"/>
+				<metadata-artifact status="no" details="" size="2825" time="0" location="/Users/jasminevickery/.ivy2/cache/org.scala-lang/scala-reflect/ivy-2.12.4.xml" searched="false" origin-is-local="false" origin-location="https://jcenter.bintray.com/org/scala-lang/scala-reflect/2.12.4/scala-reflect-2.12.4.pom"/>
+				<caller organisation="default" name="matrices$sources_2.12" conf="test, compile, runtime" rev="2.12.4" rev-constraint-default="2.12.4" rev-constraint-dynamic="2.12.4" callerrev="1.0" extra-info.apiURL="http://www.scala-lang.org/api/2.12.4/"/>
+				<artifacts>
+					<artifact name="scala-reflect" type="jar" ext="jar" status="no" details="" size="3587892" time="0" location="/Users/jasminevickery/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.12.4.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/scala-lang/scala-reflect/2.12.4/scala-reflect-2.12.4.jar"/>
+					</artifact>
+					<artifact name="scala-reflect" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="582957" time="0" location="/Users/jasminevickery/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.12.4-sources.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/scala-lang/scala-reflect/2.12.4/scala-reflect-2.12.4-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang" name="scala-library">
+			<revision name="2.12.4" status="release" pubdate="20171011080456" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.12.4/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="0">
+				<license name="BSD 3-Clause" url="http://www.scala-lang.org/license.html"/>
+				<metadata-artifact status="no" details="" size="2653" time="0" location="/Users/jasminevickery/.ivy2/cache/org.scala-lang/scala-library/ivy-2.12.4.xml" searched="false" origin-is-local="false" origin-location="https://jcenter.bintray.com/org/scala-lang/scala-library/2.12.4/scala-library-2.12.4.pom"/>
+				<caller organisation="default" name="matrices$sources_2.12" conf="test, compile, runtime" rev="2.12.4" rev-constraint-default="2.12.4" rev-constraint-dynamic="2.12.4" callerrev="1.0" extra-info.apiURL="http://www.scala-lang.org/api/2.12.4/"/>
+				<artifacts>
+					<artifact name="scala-library" type="jar" ext="jar" status="no" details="" size="5247152" time="0" location="/Users/jasminevickery/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.12.4.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/scala-lang/scala-library/2.12.4/scala-library-2.12.4.jar"/>
+					</artifact>
+					<artifact name="scala-library" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="991177" time="0" location="/Users/jasminevickery/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.12.4-sources.jar">
+						<origin-location is-local="false" location="https://jcenter.bintray.com/org/scala-lang/scala-library/2.12.4/scala-library-2.12.4-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+	</dependencies>
+</ivy-report>
