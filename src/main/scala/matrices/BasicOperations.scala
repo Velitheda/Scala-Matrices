@@ -1,13 +1,7 @@
 package matrices
 
 
-trait BasicOperations extends Matrix {
-  def sameDimensions(other: Matrix): Boolean = {
-    getRows == other.getRows && getColumns == other.getColumns
-  }
-
-  //def equal inverted dimensions
-
+trait BasicOperations extends Matrix with Utilities {
   private def performOperation(other: Matrix)(operation: Function2[Int, Int, Int]): MatrixImpl = {
     if(!sameDimensions(other)){
       throw new RuntimeException("Matrices are the wrong size")

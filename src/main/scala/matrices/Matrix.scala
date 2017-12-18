@@ -8,4 +8,5 @@ trait Matrix {
   def getRows: Int
   def getColumns: Int
   def toString: String
+  def equals(matrix: Matrix): Boolean
 }

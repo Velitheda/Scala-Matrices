@@ -80,7 +80,7 @@ class MainSpec extends Specification {
 
   "Basic operations" should {
 
-    "add together two matrices simple matrices" in {
+    "add together two simple matrices" in {
       val matA: Matrix = new MatrixImpl(Array(Array(1)))
       val matB: Matrix = new MatrixImpl(Array(Array(2)))
       val matC: Matrix = matA.add(matB)
@@ -95,14 +95,13 @@ class MainSpec extends Specification {
       val result = new MatrixImpl(Array(Array(3, 3), Array(3, 3)))
       println(result.toString)
       println(matC.toString)
-      matC.body must beEqualTo(result)//need custom equals method
+      matC.equals(result) must beTrue
     }
 
     "throw a type error if you attmept to add two wrongly sized matrices" in {
       val a = new MatrixImpl(Array(Array(1, 2)))
       val b = new MatrixImpl(Array(Array(1)))
-      //a.add(b) must throwAn(Exception)
-      ok
+      a.add(b) must throwA(new RuntimeException("Matrices are the wrong size"))
     }
 
 

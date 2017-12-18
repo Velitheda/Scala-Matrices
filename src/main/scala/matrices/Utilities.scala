@@ -15,9 +15,26 @@ trait Utilities extends Matrix {
     new MatrixImpl(body.updated(row, newRow))
   }
 
+  def sameDimensions(other: Matrix): Boolean = {
+    getRows == other.getRows && getColumns == other.getColumns
+  }
+
   override def toString: String = {
     body.map(_.mkString(", ")).mkString("\n")
   }
 
-  //def equals(matrix: Matrix): Boolean
+  //def equal inverted dimensions
+
+  def equals(other: Matrix): Boolean = {
+    println("the same")
+    if(!sameDimensions(other)){
+      return false
+    }
+    (other.body zip body).flatMap { case (row, thisRow) =>
+      (row zip thisRow).map{
+        case (i, j) => i == j
+      }
+    }.forall(b => b)
+  }
+
 }
