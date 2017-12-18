@@ -6,7 +6,7 @@ class MatrixImpl(bdy: Array[Array[Int]]) extends BasicOperations with Utilities 
 
   // not needed?
   def this(rows: Int, columns: Int){
-    this(Array.tabulate(rows, columns)((a, b) => 1))
+    this(Array.tabulate(rows, columns)((a, b) => 0))
   }
 
 }

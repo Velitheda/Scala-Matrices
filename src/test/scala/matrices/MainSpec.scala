@@ -19,30 +19,30 @@ object MatrixSpecification extends Properties("Matrix") {
     s <- Gen.containerOfN[Array, Array[Int]](r, row(r))
   } yield new MatrixImpl(s)
 
-//  property("matrix addition should be commutative") =
-//    forAll(matrix(listNumber, listNumber), matrix(listNumber, listNumber)) {
-//      (a, b) => a.add(b).body sameElements b.add(a).body
-//    }
-//
-//  property("matrix addition result should be the same size") =
-//    forAll( listNumber { (size: Int) =>
-//
-//      val a = matrix(size, size)
-//      val b = matrix(size, size)//forAll(matrix(size, size) { m =>
-//      true
-//    })
-//      println("a")
-//      println(a.toString)
-//      println("b")
-//      println(b.toString)
-//      println("c")
-//      //val c: Matrix = a.add(b)
-//      //println(c.toString)
-//      //this now throws when columns different, confusing the test
-//      true
-//      //c.getRows == a.getRows && c.getColumns == a.getColumns // should throw or even fail compilation
-//
-//  }
+  def matrixList(num: Int):Gen[List[MatrixImpl]] = for {
+    r <- listNumber
+    c <- listNumber
+    s <- Gen.containerOfN[List, MatrixImpl](num, matrix(r, c))
+  } yield s
+
+  property("matrix addition should be commutative") =
+    forAll(matrixList(2)) { case(List(a, b)) =>
+      println(a.toString)
+      println(b.toString)
+      a.add(b).equals(b.add(a))
+    }
+
+  property("matrix addition should be associative") =
+    forAll(matrixList(3)) { case(List(a, b, c)) =>
+      a.add(b).add(c).equals(b.add(c).add(a))
+    }
+
+  property("adding a matrix of zeros should result in the same matrix") =
+    forAll(matrixList(1)) { case(List(a)) =>
+      val identity = new MatrixImpl(a.getRows, a.getColumns)
+      a.add(identity).equals(a)
+    }
+
 }
 
 class MainSpec extends Specification {
