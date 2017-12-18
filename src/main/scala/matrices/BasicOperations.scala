@@ -7,19 +7,23 @@ trait BasicOperations extends Matrix with Utilities {
       throw new RuntimeException("Matrices are the wrong size")
     }
     new MatrixImpl(
-      (other.body zip body).map { case (row, thisRow) =>
-        operateRows(row, thisRow)(operation)
+      (body zip other.body).map { case (row, otherRow) =>
+        operateRows(row, otherRow)(operation)
       }
     )
   }
 
-  private def operateRows(row: Array[Int], thisRow: Array[Int])(operation: Function2[Int, Int, Int]): Array[Int] = {
-    (row zip thisRow).map{
+  private def operateRows(row: Array[Int], otherRow: Array[Int])(operation: Function2[Int, Int, Int]): Array[Int] = {
+    (row zip otherRow).map{
       case (i, j) => operation(i, j)
     }
   }
 
   def add(matrix: Matrix): MatrixImpl = {
     performOperation(matrix)(_ + _)
+  }
+
+  def subtract(matrix: Matrix): MatrixImpl = {
+    performOperation(matrix)(_ - _)
   }
 }

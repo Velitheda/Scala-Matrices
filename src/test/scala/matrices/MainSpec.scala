@@ -95,8 +95,6 @@ class MainSpec extends Specification {
       val matC: Matrix = matA.add(matB)
 
       val result = new MatrixImpl(Array(Array(3, 3), Array(3, 3)))
-      println(result.toString)
-      println(matC.toString)
       matC.equals(result) must beTrue
     }
 
@@ -104,6 +102,15 @@ class MainSpec extends Specification {
       val a = new MatrixImpl(Array(Array(1, 2)))
       val b = new MatrixImpl(Array(Array(1)))
       a.add(b) must throwA(new RuntimeException("Matrices are the wrong size"))
+    }
+
+    "subtract two two by two matrices" in {
+      val matA: Matrix = new MatrixImpl(Array(Array(1, 1), Array(2, 2)))
+      val matB: Matrix = new MatrixImpl(Array(Array(2, 2), Array(1, 1)))
+      val matC: Matrix = matA.subtract(matB)
+
+      val result = new MatrixImpl(Array(Array(-1, -1), Array(1, 1)))
+      matC.equals(result) must beTrue
     }
 
   }
