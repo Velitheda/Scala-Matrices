@@ -26,7 +26,6 @@ trait Utilities extends Matrix {
   //def equal inverted dimensions
 
   def equals(other: Matrix): Boolean = {
-    println("the same")
     if(!sameDimensions(other)){
       return false
     }

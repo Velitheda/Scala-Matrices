@@ -67,7 +67,9 @@ class MainSpec extends Specification {
     }
 
     "check two matrices are equal" in {
-      ok
+      val matA: Matrix = new MatrixImpl(Array(Array(1, 2), Array(3, 4)))
+      val matB: Matrix = new MatrixImpl(Array(Array(1, 2), Array(3, 4)))
+      matA.equals(matB) must beTrue
     }
 
     "print out a correct respresentation of the matrix body" in {
@@ -103,7 +105,6 @@ class MainSpec extends Specification {
       val b = new MatrixImpl(Array(Array(1)))
       a.add(b) must throwA(new RuntimeException("Matrices are the wrong size"))
     }
-
 
   }
 }
