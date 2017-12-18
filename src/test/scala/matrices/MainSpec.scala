@@ -14,35 +14,35 @@ object MatrixSpecification extends Properties("Matrix") {
   def row(n: Int) = Gen.containerOfN[Array, Int](n, number)
 
   def matrix(rowNum: Int, colNum: Int):Gen[MatrixImpl] = for {
-    r <- rowNum
-    c <- colNum
+    r <- listNumber
+    c <- listNumber
     s <- Gen.containerOfN[Array, Array[Int]](r, row(r))
   } yield new MatrixImpl(s)
 
-  property("matrix addition should be commutative") =
-    forAll(matrix(listNumber, listNumber), matrix(listNumber, listNumber)) {
-      (a, b) => a.add(b).body sameElements b.add(a).body
-    }
-
-  property("matrix addition result should be the same size") =
-    forAll(listNumber) { (size: Int) =>
-
-      val a = matrix(size, size)
-      val b = forAll(matrix(size, size) { m =>
-      true
-    })
-      println("a")
-      println(a.toString)
-      println("b")
-      println(b.toString)
-      println("c")
-      val c: Matrix = a.add(b)
-      println(c.toString)
-      //this now throws when columns different, confusing the test
-      true
-      //c.getRows == a.getRows && c.getColumns == a.getColumns // should throw or even fail compilation
-
-  }
+//  property("matrix addition should be commutative") =
+//    forAll(matrix(listNumber, listNumber), matrix(listNumber, listNumber)) {
+//      (a, b) => a.add(b).body sameElements b.add(a).body
+//    }
+//
+//  property("matrix addition result should be the same size") =
+//    forAll( listNumber { (size: Int) =>
+//
+//      val a = matrix(size, size)
+//      val b = matrix(size, size)//forAll(matrix(size, size) { m =>
+//      true
+//    })
+//      println("a")
+//      println(a.toString)
+//      println("b")
+//      println(b.toString)
+//      println("c")
+//      //val c: Matrix = a.add(b)
+//      //println(c.toString)
+//      //this now throws when columns different, confusing the test
+//      true
+//      //c.getRows == a.getRows && c.getColumns == a.getColumns // should throw or even fail compilation
+//
+//  }
 }
 
 class MainSpec extends Specification {
@@ -74,14 +74,10 @@ class MainSpec extends Specification {
       val stringMatrix =
         """1, 1, 1
           |1, 1, 1""".stripMargin
-      println(stringMatrix)
       matrix.toString must beEqualTo(stringMatrix)
     }
   }
 
-  //operations should be inside a trait mixed in?
-
-  // eg an orthogonal trait?
   "Basic operations" should {
 
     "add together two matrices simple matrices" in {
@@ -97,9 +93,9 @@ class MainSpec extends Specification {
       val matC: Matrix = matA.add(matB)
 
       val result = new MatrixImpl(Array(Array(3, 3), Array(3, 3)))
-      println(matC.getColumns)
-      println(result.body.head.toString)
-      matC.body.sameElements(result.body) must beTrue
+      println(result.toString)
+      println(matC.toString)
+      matC.body must beEqualTo(result)//need custom equals method
     }
 
     "throw a type error if you attmept to add two wrongly sized matrices" in {
