@@ -25,8 +25,6 @@ object MatrixSpecification extends Properties("Matrix") {
 
   property("matrix addition should be commutative") =
     forAll(matrixList(2)) { case(List(a, b)) =>
-      println(a.toString)
-      println(b.toString)
       a.add(b).equals(b.add(a))
     }
 
