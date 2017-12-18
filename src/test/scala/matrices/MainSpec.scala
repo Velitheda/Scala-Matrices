@@ -14,9 +14,7 @@ object MatrixSpecification extends Properties("Matrix") {
   def row(n: Int) = Gen.containerOfN[Array, Int](n, number)
 
   def matrix(rowNum: Int, colNum: Int):Gen[MatrixImpl] = for {
-    r <- listNumber
-    c <- listNumber
-    s <- Gen.containerOfN[Array, Array[Int]](r, row(r))
+    s <- Gen.containerOfN[Array, Array[Int]](rowNum, row(colNum))
   } yield new MatrixImpl(s)
 
   def matrixList(num: Int):Gen[List[MatrixImpl]] = for {
