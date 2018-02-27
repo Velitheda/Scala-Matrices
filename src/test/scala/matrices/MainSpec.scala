@@ -33,6 +33,7 @@ object MatrixSpecification extends Properties("Matrix") {
       a.add(b).add(c).equals(b.add(c).add(a))
     }
 
+  // default matrix should really be identity
   property("adding a matrix of zeros should result in the same matrix") =
     forAll(matrixList(1)) { case(List(a)) =>
       val identity = new MatrixImpl(a.getRows, a.getColumns)
