@@ -3,3 +3,5 @@
 *.iml
 *.iws
 target/
+project/target/
+out/
