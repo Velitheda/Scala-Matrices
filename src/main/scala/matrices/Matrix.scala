@@ -2,63 +2,76 @@ package matrices
 
 
 trait Matrix[M] {
-  //TODO: Should this be apply a function to corresponding elements on two matrices?
+  // Should this be 'apply a function to corresponding elements on two matrices'?
   def add(matrix: M, other: M): M
   def multiply(matrix: M, other: M): M
 
-  // need to enforce that T is the type of the elements inside M
-  def function(matrix: M, f: (Int) => Int): M
+  // TODO: Validate dimensions
+  def dotProduct(matrix: M, other: M): Double
+
+  // TODO: handle Numeric types other than double
+  def function(matrix: M, f: (Double) => Double): M
   def transpose(matrix: M): M
   //TODO: decide if .equals is enough
   def isEqual(matrix: M, other: M): Boolean
 
-  /*
-  def numRows: Int
-  def numColumns: Int
+  def numColumns(matrix: M): Int
+  def det(matrix: M): Double
 
-  def rows: ???
-  def columns: ???
-   */
+  def getRow(matrix: M, rowIndex: Int): M
 }
 
 object MatrixOps {
   implicit class ExposedMatrixOps[M](m: M)(implicit ops: Matrix[M]) {
     def +(other: M): M = ops.add(m, other)
     def *(other: M): M = ops.multiply(m, other)
-    def function(f: (Int) => Int): M = ops.function(m, f)
+    def dotProduct(other: M): Double = ops.dotProduct(m, other)
+    def function(f: (Double) => Double): M = ops.function(m, f)
     def transpose(): M = ops.transpose(m)
     def isEqual(other: M): Boolean = ops.isEqual(m, other)
 
-    // TODO: handle Numeric types properly
-    def -(other: M): M = ops.add(m, other.function((e: Int) => e * -1))
+    def numColumns(): Int = ops.numColumns(m)
+    def numRows(): Int = ops.transpose(m).numColumns()
+
+    def getColumn(columnIndex: Int): M = ops.getRow(ops.transpose(m), columnIndex).transpose
+    def getRow(rowIndex: Int): M = ops.getRow(m, rowIndex)
+
+    def det(matrix: M): Double = ops.det(m)
+    def -(other: M): M = ops.add(m, other.function((e: Double) => e * -1))
   }
 }
 
-case class ArrayMatrix(rows: Array[Array[Int]])
+case class ArrayMatrix(rows: Array[Array[Double]])
 object ArrayMatrix {
-
-  private def dotProduct(row: Array[Int], column: Array[Int]): Int = {
-    val s = row zip column map {t => t._1 * t._2}
-    s.sum
-  }
-
-  private def numColumns(matrix: ArrayMatrix): Int = matrix.rows.headOption.getOrElse(Array()).length
 
   implicit object ArrayMatrixImpl extends Matrix[ArrayMatrix] {
     def add(matrix: ArrayMatrix, other: ArrayMatrix) = {
       ArrayMatrix(matrix.rows zip other.rows map {
-        case(row, otherRow) => row zip otherRow map { case(element, otherElement) => element + otherElement }
+        case(row, otherRow) => row zip otherRow map {
+          case(element, otherElement) => element + otherElement
+        }
       })
     }
     def multiply(matrix: ArrayMatrix, other: ArrayMatrix) = {
       //each row takes the dot product with each column to get a set of new rows
       val otherColumns = transpose(other).rows
-      val result = matrix.rows.map(row => otherColumns.map(column => dotProduct(row, column)))
+      val result = matrix.rows.map(row => otherColumns.map (column =>
+        dotProduct(ArrayMatrix(Array(row)), transpose(ArrayMatrix(Array(column))))
+      ))
       ArrayMatrix(result)
     }
-    def function(matrix: ArrayMatrix, f: (Int) => Int): ArrayMatrix = {
+
+    def dotProduct(rowMatrix: ArrayMatrix, columnMatrix: ArrayMatrix): Double = {
+      val row = rowMatrix.rows.headOption.getOrElse(Array())
+      val column = transpose(columnMatrix).rows.headOption.getOrElse(Array())
+      val s = row zip column map { t => t._1 * t._2 }
+      s.sum
+    }
+
+    def function(matrix: ArrayMatrix, f: (Double) => Double): ArrayMatrix = {
       ArrayMatrix(matrix.rows.map(_.map(f)))
     }
+
     def transpose(matrix: ArrayMatrix): ArrayMatrix = {
       //TODO: enforce these are rectangular.
       ArrayMatrix(
@@ -75,5 +88,12 @@ object ArrayMatrix {
       !a.toSet.contains(false)
     }
 
+    def numColumns(matrix: ArrayMatrix): Int = matrix.rows.headOption.getOrElse(Array()).length
+
+    def getRow(matrix: ArrayMatrix, columnIndex: Int): ArrayMatrix = {
+      ArrayMatrix(Array(matrix.rows(columnIndex)))
+    }
+
+    def det(matrix: ArrayMatrix): Double = -1
   }
 }
