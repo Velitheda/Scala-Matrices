@@ -2,35 +2,80 @@ package matrices
 
 
 trait Matrix[M] {
+  //TODO: Should this be apply a function to corresponding elements on two matrices?
   def add(matrix: M, other: M): M
   def multiply(matrix: M, other: M): M
 
   // need to enforce that T is the type of the elements inside M
-  def elementsFunction[T](matrix: M, f: (T) => T): M
-  //def transpose(matrix: M): M
+  def function(matrix: M, f: (Int) => Int): M
+  def transpose(matrix: M): M
+  //TODO: decide if .equals is enough
   def isEqual(matrix: M, other: M): Boolean
+
+  /*
+  def numRows: Int
+  def numColumns: Int
+
+  def rows: ???
+  def columns: ???
+   */
 }
 
 object MatrixOps {
   implicit class ExposedMatrixOps[M](m: M)(implicit ops: Matrix[M]) {
     def +(other: M): M = ops.add(m, other)
     def *(other: M): M = ops.multiply(m, other)
-    def elementsFunction[T](f: (T) => T): M = ops.elementsFunction[T](m, f)
+    def function(f: (Int) => Int): M = ops.function(m, f)
+    def transpose(): M = ops.transpose(m)
     def isEqual(other: M): Boolean = ops.isEqual(m, other)
 
-    def -(other: M): M = ops.add(m, other.elementsFunction((e: Int) => e * -1))
+    // TODO: handle Numeric types properly
+    def -(other: M): M = ops.add(m, other.function((e: Int) => e * -1))
   }
 }
 
-case class ArrayMatrix(body: Array[Array[Int]])
+case class ArrayMatrix(rows: Array[Array[Int]])
 object ArrayMatrix {
+
+  def dotProduct(row: Array[Int], column: Array[Int]): Int = {
+    val s = row zip column map {t => t._1 * t._2} //.sum
+    s.sum
+  }
+
   implicit object ArrayMatrixImpl extends Matrix[ArrayMatrix] {
-    def add(matrix: ArrayMatrix, other: ArrayMatrix) = matrix // + other TODO: implement
-    def multiply(matrix: ArrayMatrix, other: ArrayMatrix) = matrix // * other TODO: implement
-    def elementsFunction[Int](matrix: ArrayMatrix, f: (Int) => Int): ArrayMatrix = {
-      ArrayMatrix(Array(Array(1)))
+    def add(matrix: ArrayMatrix, other: ArrayMatrix) = {
+      ArrayMatrix(matrix.rows zip other.rows map {
+        case(row, otherRow) => row zip otherRow map { case(element, otherElement) => element + otherElement }
+      })
     }
-    //is .equals enough?
-    def isEqual(matrix: ArrayMatrix, other: ArrayMatrix) = false // * other TODO: implement
+    def multiply(matrix: ArrayMatrix, other: ArrayMatrix) = {
+      //TODO: remove .head
+      //other transposed, so is effectively 'other.columns'
+      val otherColumns = Array.tabulate(other.rows.head.length){ columnIndex =>
+        other.rows.map(row => row(columnIndex))
+      }
+      val result = matrix.rows.map(row => otherColumns.map { column => dotProduct(row, column)})
+      ArrayMatrix(result)
+    }
+    def function(matrix: ArrayMatrix, f: (Int) => Int): ArrayMatrix = {
+      ArrayMatrix(matrix.rows.map(_.map(f)))
+    }
+    def transpose(matrix: ArrayMatrix): ArrayMatrix = {
+      //TODO: enforce these are rectangular
+      ArrayMatrix(
+        //TODO: remove .head
+        Array.tabulate(matrix.rows.head.length){ columnIndex =>
+          matrix.rows.map(row => row(columnIndex))
+        }
+      )
+    }
+
+    def isEqual(matrix: ArrayMatrix, other: ArrayMatrix) = {
+      val a = matrix.rows zip other.rows flatMap {
+        case(row, otherRow) => row zip otherRow map { case(element, otherElement) => element == otherElement }
+      }
+      !a.toSet.contains(false)
+    }
+
   }
 }
