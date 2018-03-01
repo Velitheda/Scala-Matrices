@@ -16,9 +16,11 @@ trait Matrix[M] {
   def isEqual(matrix: M, other: M): Boolean
 
   def numColumns(matrix: M): Int
-  def det(matrix: M): Double
-
+  def numRows(matrix: M): Int
+  def getColumn(matrix: M, columnIndex: Int): M
   def getRow(matrix: M, rowIndex: Int): M
+
+  def det(matrix: M): Double
 }
 
 object MatrixOps {
@@ -31,9 +33,9 @@ object MatrixOps {
     def isEqual(other: M): Boolean = ops.isEqual(m, other)
 
     def numColumns(): Int = ops.numColumns(m)
-    def numRows(): Int = ops.transpose(m).numColumns()
+    def numRows(): Int = ops.numRows(m)
 
-    def getColumn(columnIndex: Int): M = ops.getRow(ops.transpose(m), columnIndex).transpose
+    def getColumn(columnIndex: Int): M = ops.getColumn(m, columnIndex)
     def getRow(rowIndex: Int): M = ops.getRow(m, rowIndex)
 
     def det(matrix: M): Double = ops.det(m)
@@ -52,7 +54,16 @@ object ArrayMatrix {
         }
       })
     }
+
     def multiply(matrix: ArrayMatrix, other: ArrayMatrix) = {
+//      val result = for(rowIndex <- 0 until numRows(matrix)) yield {
+//        Array(
+//          for(columnIndex <- 0 until numColumns(other)) yield {
+//            dotProduct(getRow(matrix, rowIndex), getColumn(other, columnIndex))
+//          }
+//        )
+//      }
+
       //each row takes the dot product with each column to get a set of new rows
       val otherColumns = transpose(other).rows
       val result = matrix.rows.map(row => otherColumns.map (column =>
@@ -89,10 +100,13 @@ object ArrayMatrix {
     }
 
     def numColumns(matrix: ArrayMatrix): Int = matrix.rows.headOption.getOrElse(Array()).length
+    def numRows(matrix: ArrayMatrix): Int = matrix.rows.length
 
-    def getRow(matrix: ArrayMatrix, columnIndex: Int): ArrayMatrix = {
+    def getRow(matrix: ArrayMatrix, columnIndex: Int): ArrayMatrix =
       ArrayMatrix(Array(matrix.rows(columnIndex)))
-    }
+
+    def getColumn(matrix: ArrayMatrix, columnIndex: Int): ArrayMatrix =
+      transpose(getRow(transpose(matrix), columnIndex))
 
     def det(matrix: ArrayMatrix): Double = -1
   }
