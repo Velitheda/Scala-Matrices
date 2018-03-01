@@ -38,10 +38,10 @@ case class ArrayMatrix(rows: Array[Array[Int]])
 object ArrayMatrix {
 
   private def dotProduct(row: Array[Int], column: Array[Int]): Int = {
-    val s = row zip column map {t => t._1 * t._2} //.sum
+    val s = row zip column map {t => t._1 * t._2}
     s.sum
   }
-  
+
   private def numColumns(matrix: ArrayMatrix): Int = matrix.rows.headOption.getOrElse(Array()).length
 
   implicit object ArrayMatrixImpl extends Matrix[ArrayMatrix] {
@@ -52,7 +52,8 @@ object ArrayMatrix {
     }
     def multiply(matrix: ArrayMatrix, other: ArrayMatrix) = {
       //each row takes the dot product with each column to get a set of new rows
-      val result = matrix.rows.map(row => transpose(other).rows.map { column => dotProduct(row, column)})
+      val otherColumns = transpose(other).rows
+      val result = matrix.rows.map(row => otherColumns.map(column => dotProduct(row, column)))
       ArrayMatrix(result)
     }
     def function(matrix: ArrayMatrix, f: (Int) => Int): ArrayMatrix = {
