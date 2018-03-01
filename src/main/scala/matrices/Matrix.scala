@@ -37,10 +37,12 @@ object MatrixOps {
 case class ArrayMatrix(rows: Array[Array[Int]])
 object ArrayMatrix {
 
-  def dotProduct(row: Array[Int], column: Array[Int]): Int = {
+  private def dotProduct(row: Array[Int], column: Array[Int]): Int = {
     val s = row zip column map {t => t._1 * t._2} //.sum
     s.sum
   }
+  
+  private def numColumns(matrix: ArrayMatrix): Int = matrix.rows.headOption.getOrElse(Array()).length
 
   implicit object ArrayMatrixImpl extends Matrix[ArrayMatrix] {
     def add(matrix: ArrayMatrix, other: ArrayMatrix) = {
@@ -49,22 +51,17 @@ object ArrayMatrix {
       })
     }
     def multiply(matrix: ArrayMatrix, other: ArrayMatrix) = {
-      //TODO: remove .head
-      //other transposed, so is effectively 'other.columns'
-      val otherColumns = Array.tabulate(other.rows.head.length){ columnIndex =>
-        other.rows.map(row => row(columnIndex))
-      }
-      val result = matrix.rows.map(row => otherColumns.map { column => dotProduct(row, column)})
+      //each row takes the dot product with each column to get a set of new rows
+      val result = matrix.rows.map(row => transpose(other).rows.map { column => dotProduct(row, column)})
       ArrayMatrix(result)
     }
     def function(matrix: ArrayMatrix, f: (Int) => Int): ArrayMatrix = {
       ArrayMatrix(matrix.rows.map(_.map(f)))
     }
     def transpose(matrix: ArrayMatrix): ArrayMatrix = {
-      //TODO: enforce these are rectangular
+      //TODO: enforce these are rectangular.
       ArrayMatrix(
-        //TODO: remove .head
-        Array.tabulate(matrix.rows.head.length){ columnIndex =>
+        Array.tabulate(numColumns(matrix)){ columnIndex =>
           matrix.rows.map(row => row(columnIndex))
         }
       )
