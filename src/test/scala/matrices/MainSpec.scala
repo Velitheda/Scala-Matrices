@@ -15,7 +15,10 @@ object MatrixSpecification extends Properties("Matrix") {
 
   def matrixFactory(rowNum: Int, colNum: Int): Gen[ArrayMatrix] = for {
     s <- Gen.containerOfN[Array, Array[Double]](rowNum, row(colNum))
-  } yield new ArrayMatrix(s)
+  } yield {
+    val i = s.map(r => r.map(_.toInt.toDouble))
+    new ArrayMatrix(i)
+  }
 
   def matrixListFactory(num: Int):Gen[List[ArrayMatrix]] = for {
     r <- listNumber
@@ -41,10 +44,8 @@ object MatrixSpecification extends Properties("Matrix") {
     }
 
   // multiplication
-  property("matrix multiplication should be commutative") =
-    forAll(matrixListFactory(2)) { case(List(a, b)) =>
-      (a * b).isEqual(b * a)
-    }
+
+  //matrices aren't the right size here for this. Need to transpose b and make c the size of the result
   property("matrix multiplication should be associative") =
     forAll(matrixListFactory(3)) { case(List(a, b, c)) =>
       ((a * b) * c).isEqual((b * c) * a)
