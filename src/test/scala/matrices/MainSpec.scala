@@ -165,5 +165,57 @@ class MainSpec extends Specification {
       m.getRow(1).rows must beEqualTo(Array(Array(2, 4, 6)))
       m.getColumn(2).rows must beEqualTo(Array(Array(5), Array(6)))
     }
+
+    val oneByOneMat = ArrayMatrix(Array(Array(1.0)))
+    val twoByTwoMat = ArrayMatrix(Array(
+      Array(2.0, 1.0),
+      Array(4.0, 3.0)
+    ))
+    val matrix = ArrayMatrix(Array(
+      Array(3.0, 4.0, 5.0),
+      Array(6.0, 7.0, 8.0),
+      Array(1.0, 2.0, 3.0)
+    ))
+
+    "remove a row from a matrix" in {
+      matrix.removeRow(0).rows must beEqualTo(Array(
+        Array(6.0, 7.0, 8.0),
+        Array(1.0, 2.0, 3.0)
+      ))
+    }
+    "remove a column from a matrix" in {
+      matrix.removeColumn(2).rows must beEqualTo(Array(
+        Array(3.0, 4.0),
+        Array(6.0, 7.0),
+        Array(1.0, 2.0)
+      ))
+    }
+    "get an element from a matrix" in {
+      matrix.getElement(1, 2) must beEqualTo(8.0)
+    }
+    "multiply a row in a matrix by a scalar" in { ko}
+    "add a multiple of a row to another row in a matrix" in { ko}
+    "determine if a matrix is square" in { ko}
+    "calculate create a submatrix by deleting a row and a column of a matrix" in {ko}
+    "calculate the correct cofactor sign for an element in a matrix" in {
+      //matrix.cofactorSign()
+      ko
+    }
+    "calculate the matrix of cofactors" in { ko}
+    "calculate the determinant of a 1x1 matrix" in {
+      oneByOneMat.det must beEqualTo(1.0)
+    }
+    "calculate the determinant of a 2x2 matrix" in {
+      twoByTwoMat.det must beEqualTo(2.0)
+    }
+    "calculate the determinant of a 3x3 matrix" in {
+      twoByTwoMat.det must beEqualTo(0.0)
+    }
+    "calculate the determinant of a 4x4 matrix" in { ko}
+    "calculate the inverse of a 1x1 matrix" in { ko}
+    "calculate the inverse of a 2x2 matrix" in { ko}
+    "calculate the inverse of a 3x3 matrix" in { ko}
+    "calculate the inverse of a 4x4 matrix" in { ko}
+
   }
 }

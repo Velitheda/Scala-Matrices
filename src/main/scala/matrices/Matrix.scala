@@ -20,19 +20,25 @@ trait Matrix[M] {
   def getRow(matrix: M, rowIndex: Int): M
   def getColumn(matrix: M, columnIndex: Int): M = transpose(getRow(transpose(matrix), columnIndex))
 
-  protected def setColumn(matrix: M, columnIndex: Int, column: M): M= {
+  protected def setColumn(matrix: M, columnIndex: Int, column: M): M =
     transpose(setRow(transpose(matrix), columnIndex, column))
-  }
+
   protected def setRow(matrix: M, rowIndex: Int, row: M): M
+
+  def getElement(matrix: M, rowIndex: Int, columnIndex: Int): Double
 
   def det(matrix: M): Double
   def -(m: M, other: M): M = add(m, function(other, (e: Double) => e * -1))
 
-  protected def removeRow(matrix: M, rowIndex: Int): M
-  protected def removeColumn(matrix: M, columnIndex: Int): M = transpose(removeRow(transpose(matrix), columnIndex))
+  def removeRow(matrix: M, rowIndex: Int): M
+  def removeColumn(matrix: M, columnIndex: Int): M = transpose(removeRow(transpose(matrix), columnIndex))
 
   protected def swapRows(matrix: M, startIndex: Int, destinationIndex: Int): M
   protected def multiplyRow(matrix: M, rowIndex: Int, multiplier: Double): M
+
+  protected def cofactorMatrix(matrix: M): M
+  def adjoint(matrix: M): M = transpose(cofactorMatrix(matrix))
+  def inverse(matrix: M): M = function(adjoint(matrix), e => e * (1 / det(matrix)))
 }
 
 object MatrixOps {
@@ -50,7 +56,12 @@ object MatrixOps {
     def getColumn(columnIndex: Int): M = ops.getColumn(m, columnIndex)
     def getRow(rowIndex: Int): M = ops.getRow(m, rowIndex)
 
-    def det(matrix: M): Double = ops.det(m)
+    def removeRow(rowIndex: Int): M = ops.removeRow(m, rowIndex)
+    def removeColumn(columnIndex: Int): M = ops.removeColumn(m, columnIndex)
+
+    def getElement(rowIndex: Int, columnIndex: Int): Double = ops.getElement(m, rowIndex, columnIndex)
+
+    def det(): Double = ops.det(m)
     def -(other: M): M = ops.-(m, other)
   }
 }
@@ -158,8 +169,10 @@ object ArrayMatrix {
     def getElement(matrix: ArrayMatrix, rowIndex: Int, columnIndex: Int): Double = matrix.rows(rowIndex)(columnIndex)
 
     def det(matrix: ArrayMatrix): Double = {
-      //TODO if is 1x1 or empty handle
-      if(isTwoByTwo(matrix)){
+      if(isOneByOne(matrix)) {
+        matrix.rows(0)(0)
+      }
+      else if(isTwoByTwo(matrix)){
         twoByTwoDet(matrix)
       } else {
         // cofactor expansion along the first row
@@ -176,20 +189,30 @@ object ArrayMatrix {
       }
     }
 
+    // messy, fix how an empty matrix could get one row
+    def isEmptyMatrix(matrix: ArrayMatrix): Boolean = numRows(matrix) == 0 || numColumns(matrix) == 0
+    def isOneByOne(matrix: ArrayMatrix): Boolean = numRows(matrix) == 1 && numColumns(matrix) == 1
     def isTwoByTwo(matrix: ArrayMatrix): Boolean = numRows(matrix) == 2 && numColumns(matrix) == 2
+
+    def isSquare(matrix: ArrayMatrix): Boolean = numRows(matrix) == numColumns(matrix)
+
     def twoByTwoDet(matrix: ArrayMatrix): Double = {
       getElement(matrix, 0, 0) * getElement(matrix, 1, 1) - getElement(matrix, 1, 0) * getElement(matrix, 0, 1)
     }
 
+    //rename: this is not the minor.
     def minor(matrix: ArrayMatrix, rowIndex: Int, columnIndex: Int): ArrayMatrix = {
       // TODO handle 1x1 or empty
       removeRow(removeColumn(matrix, columnIndex), rowIndex)
     }
 
-    /*
-    Inverse:
-    Matrix of minors -> matrix of cofactors -> adjoint (cofactors matrix transposed) -> * 1/det = inverse
-     */
+    def cofactorMatrix(matrix: ArrayMatrix): ArrayMatrix = {
+      ArrayMatrix(matrix.rows.zipWithIndex.map { case(row, rowIndex) =>
+        row.zipWithIndex.map { case(element, columnIndex) =>
+          det(minor(matrix, rowIndex, columnIndex)) * cofactorSign(rowIndex, columnIndex)
+        }
+      })
+    }
 
   }
 }
