@@ -10,6 +10,7 @@ import org.scalacheck.Gen
 
 object MatrixSpecification extends Properties("Matrix") {
   val number = Gen.choose(-100.0, 100.0)
+  val integer = Gen.choose(-100, 100)
   val listNumber = Gen.choose(0, 10)
   def row(n: Int) = Gen.containerOfN[Array, Double](n, number)
 
@@ -26,6 +27,7 @@ object MatrixSpecification extends Properties("Matrix") {
     s <- Gen.containerOfN[List, ArrayMatrix](num, matrixFactory(r, c))
   } yield s
 
+  //Addition
   property("matrix addition should be commutative") =
     forAll(matrixListFactory(2)) { case(List(a, b)) =>
       (a + b).isEqual(b + a)
@@ -38,20 +40,92 @@ object MatrixSpecification extends Properties("Matrix") {
 
   property("adding a matrix of zeros should result in the same matrix") =
     forAll(matrixListFactory(1)) { case(List(a)) =>
-      //dimensions might be reversed here
       val identity = new ArrayMatrix(Array.fill(a.rows.length)(Array.fill(a.rows.head.length)(0)))
       (a + identity).isEqual(a)
     }
 
-  // multiplication
-
-  //matrices aren't the right size here for this. Need to transpose b and make c the size of the result
-  property("matrix multiplication should be associative") =
-    forAll(matrixListFactory(3)) { case(List(a, b, c)) =>
-      ((a * b) * c).isEqual((b * c) * a)
+  property("the order a scalar is applied to matrix addition does not matter") =
+    forAll(matrixFactory(3, 2), matrixFactory(3, 2), integer) { case(a, b, n) =>
+      val f = (e: Double) => e * n
+      (a.function(f) * b).isEqual(a * b.function(f))
     }
-  //TODO identity test
 
+  //Multiplication
+  property("matrix multiplication should be commutitiave") =
+    forAll(matrixFactory(3, 2), matrixFactory(2, 3), matrixFactory(3, 3)) { case(a, b, c) =>
+      ((a * b) * c).isEqual(a * (b * c))
+    }
+
+  property("matrix multiplication should be distributitve") =
+    forAll(matrixFactory(3, 2), matrixFactory(3, 2), matrixFactory(2, 3)) { case(a, b, c) =>
+      ((a + b) * c).isEqual((b * c) + (a * c))
+      (c * (a + b)).isEqual((c * b) + (c * a))
+    }
+
+  property("matrix multiplication should hold the identity property") =
+    forAll(matrixListFactory(1)) { case(List(a)) =>
+      val identity = ArrayMatrix(Array.tabulate(a.numRows())(rowIndex => Array.tabulate(a.numRows())(columnIndex => if (rowIndex == columnIndex) 1 else 0)))
+      (a * identity).isEqual(a)
+    }
+
+  property("the order a scalar is applied to matrix multiplication does not matter") =
+    forAll(matrixFactory(3, 2), matrixFactory(2, 3), number) { case(a, b, n) =>
+      val f = (e: Double) => e * n.toInt
+      (a.function(f) * b).isEqual(a * b.function(f))
+    }
+
+  //Transpose
+  property("A double transpose should be the same as itself") =
+    forAll(matrixListFactory(1)) { case(List(a)) =>
+      a.transpose().transpose().isEqual(a)
+    }
+
+  property("The transpose of two added matrices is the same as transposing them and adding them") =
+    forAll(matrixFactory(3, 2), matrixFactory(3, 2)) { case(a, b) =>
+      (a + b).transpose().isEqual(a.transpose() + b.transpose())
+    }
+
+  property("The transpose of two multiplied matrices is the same as transposing them and multiplying them in reverse order") =
+    forAll(matrixFactory(3, 2), matrixFactory(2, 3)) { case(a, b) =>
+      (a * b).transpose().isEqual(b.transpose() * a.transpose())
+    }
+
+  property("A matrix can be transposed before or after being multiplied by a scalar") =
+    forAll(matrixListFactory(1), integer) { case(List(a), n) =>
+      val f = (e: Double) => e * n
+      a.transpose().function(f).isEqual(a.function(f).transpose())
+    }
+
+  //Determinants
+  property("The determinant of a matrix with a zero row or column is 0") =
+    forAll(matrixFactory(0, 0)) { case(a) =>
+      a.det() == 0
+    }
+
+  property("The determinant of a 1 by 1 matrix is its only element") =
+    forAll(matrixFactory(1, 1)) { case(a) =>
+      a.det() == a.getElement(0, 0)
+    }
+
+  property("The determinant of the identity matrix is 1") =
+    forAll(Gen.choose(1, 20)) { case(n) =>
+      val identity = ArrayMatrix(Array.tabulate(n)(rowIndex => Array.tabulate(n)(columnIndex => if (rowIndex == columnIndex) 1 else 0)))
+      println(identity)
+      identity.det() == 1
+    }
+
+  property("The determinant of a matrix is the same as the determinant of its transpose") =
+    forAll(matrixFactory(4, 4)) { case(a) =>
+      a.det() == a.transpose().det()
+    }
+
+  //make sure they are all square
+  property("the product of a determinant of two matrices is the same as the product of their determinants") =
+    forAll(matrixFactory(3, 3), matrixFactory(3, 3)) { case(a, b) =>
+      (a * b).det == a.det * b.det
+    }
+
+  //Inverse
 }
 
 class MainSpec extends Specification {
@@ -198,7 +272,7 @@ class MainSpec extends Specification {
     "determine if a matrix is square" in { ko}
     "calculate create a submatrix by deleting a row and a column of a matrix" in {ko}
     "calculate the correct cofactor sign for an element in a matrix" in {
-      //matrix.cofactorSign()
+      //matrix.cofactorSign( )
       ko
     }
     "calculate the matrix of cofactors" in { ko}
@@ -209,7 +283,7 @@ class MainSpec extends Specification {
       twoByTwoMat.det must beEqualTo(2.0)
     }
     "calculate the determinant of a 3x3 matrix" in {
-      twoByTwoMat.det must beEqualTo(0.0)
+      matrix.det must beEqualTo(0.0)
     }
     "calculate the determinant of a 4x4 matrix" in { ko}
     "calculate the inverse of a 1x1 matrix" in { ko}
