@@ -33,7 +33,7 @@ trait Matrix[M] {
 
   def getElement(matrix: M, rowIndex: Int, columnIndex: Int): Double
 
-  protected def cofactorMatrix(matrix: M): M
+  def cofactorMatrix(matrix: M): M
   def adjoint(matrix: M): M = transpose(cofactorMatrix(matrix))
   def inverse(matrix: M): M = function(adjoint(matrix), e => e * (1 / det(matrix)))
 

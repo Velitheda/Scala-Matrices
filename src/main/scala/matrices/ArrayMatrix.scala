@@ -119,7 +119,7 @@ object ArrayMatrix {
     }
 
     def cofactorSign(rowIndex: Int, columnIndex: Int): Int = {
-      ((rowIndex + 1) * (columnIndex + 1)) % 2 match {
+      ((rowIndex + 1) + (columnIndex + 1)) % 2 match {
         case 0 => 1 //even: +
         case 1 => -1 //odd: -
       }

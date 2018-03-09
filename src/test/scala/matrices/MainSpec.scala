@@ -1,11 +1,10 @@
 package matrices
 
 import org.specs2.mutable._
-
 import MatrixOps._
-
+import matrices.ArrayMatrix.ArrayMatrixImpl
 import org.scalacheck.Properties
-import org.scalacheck.Prop.{forAll, BooleanOperators}
+import org.scalacheck.Prop.{BooleanOperators, forAll}
 import org.scalacheck.Gen
 
 object MatrixSpecification extends Properties("Matrix") {
@@ -16,6 +15,13 @@ object MatrixSpecification extends Properties("Matrix") {
 
   def matrixFactory(rowNum: Int, colNum: Int): Gen[ArrayMatrix] = for {
     s <- Gen.containerOfN[Array, Array[Double]](rowNum, row(colNum))
+  } yield {
+    val i = s.map(r => r.map(_.toInt.toDouble))
+    new ArrayMatrix(i)
+  }
+
+  def squareMatrix(size: Int): Gen[ArrayMatrix] = for {
+    s <- Gen.containerOfN[Array, Array[Double]](size, row(size))
   } yield {
     val i = s.map(r => r.map(_.toInt.toDouble))
     new ArrayMatrix(i)
@@ -110,7 +116,6 @@ object MatrixSpecification extends Properties("Matrix") {
   property("The determinant of the identity matrix is 1") =
     forAll(Gen.choose(1, 20)) { case(n) =>
       val identity = ArrayMatrix(Array.tabulate(n)(rowIndex => Array.tabulate(n)(columnIndex => if (rowIndex == columnIndex) 1 else 0)))
-      println(identity)
       identity.det() == 1
     }
 
@@ -270,10 +275,15 @@ class MainSpec extends Specification {
     "multiply a row in a matrix by a scalar" in { ko}
     "add a multiple of a row to another row in a matrix" in { ko}
     "determine if a matrix is square" in { ko}
-    "calculate create a submatrix by deleting a row and a column of a matrix" in {ko}
+    "calculate create a submatrix by deleting a row and a column of a matrix" in {
+      ArrayMatrixImpl.minor(matrix, 1, 1) must beEqualTo(Array(
+        Array(3.0, 5.0),
+        Array(1.0, 3.0)
+      ))
+    }
     "calculate the correct cofactor sign for an element in a matrix" in {
-      //matrix.cofactorSign( )
-      ko
+      ArrayMatrixImpl.cofactorSign(1, 1) must beEqualTo (1)
+      ArrayMatrixImpl.cofactorSign(1, 2) must beEqualTo (-1)
     }
     "calculate the matrix of cofactors" in { ko}
     "calculate the determinant of a 1x1 matrix" in {
