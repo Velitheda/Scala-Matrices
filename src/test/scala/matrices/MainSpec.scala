@@ -326,7 +326,7 @@ class MainSpec extends Specification {
 //    "determine if a matrix is square" in { ko}
 
     "calculate create a submatrix by deleting a row and a column of a matrix" in {
-      ArrayMatrixImpl.minor(matrix, 1, 1) must beEqualTo(Array(
+      ArrayMatrixImpl.removeRowAndColumn(matrix, 1, 1) must beEqualTo(Array(
         Array(3.0, 5.0),
         Array(1.0, 3.0)
       ))

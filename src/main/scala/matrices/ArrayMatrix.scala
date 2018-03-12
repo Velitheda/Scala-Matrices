@@ -113,7 +113,7 @@ object ArrayMatrix {
       } else {
         // cofactor expansion along the first row
         matrix.rows.head.view.zipWithIndex.map { case(e, i) =>
-          getElement(matrix, 0, i) * det(minor(matrix, 0, i)) * cofactorSign(0, i)
+          getElement(matrix, 0, i) * det(removeRowAndColumn(matrix, 0, i)) * cofactorSign(0, i)
         }.sum
       }
     }
@@ -136,8 +136,7 @@ object ArrayMatrix {
       getElement(matrix, 0, 0) * getElement(matrix, 1, 1) - getElement(matrix, 1, 0) * getElement(matrix, 0, 1)
     }
 
-    //rename: this is not the minor.
-    def minor(matrix: ArrayMatrix, rowIndex: Int, columnIndex: Int): ArrayMatrix = {
+    def removeRowAndColumn(matrix: ArrayMatrix, rowIndex: Int, columnIndex: Int): ArrayMatrix = {
       // TODO handle 1x1 or empty
       removeRow(removeColumn(matrix, columnIndex), rowIndex)
     }
@@ -145,7 +144,7 @@ object ArrayMatrix {
     def cofactorMatrix(matrix: ArrayMatrix): ArrayMatrix = {
       ArrayMatrix(matrix.rows.zipWithIndex.map { case(row, rowIndex) =>
         row.zipWithIndex.map { case(element, columnIndex) =>
-          det(minor(matrix, rowIndex, columnIndex)) * cofactorSign(rowIndex, columnIndex)
+          det(removeRowAndColumn(matrix, rowIndex, columnIndex)) * cofactorSign(rowIndex, columnIndex)
         }
       })
     }
