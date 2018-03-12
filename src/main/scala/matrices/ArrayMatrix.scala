@@ -20,14 +20,6 @@ object ArrayMatrix {
     }
 
     def multiply(matrix: ArrayMatrix, other: ArrayMatrix) = {
-      //      val result = for(rowIndex <- 0 until numRows(matrix)) yield {
-      //        Array(
-      //          for(columnIndex <- 0 until numColumns(other)) yield {
-      //            dotProduct(getRow(matrix, rowIndex), getColumn(other, columnIndex))
-      //          }
-      //        )
-      //      }
-
       //each row takes the dot product with each column to get a set of new rows
       val otherColumns = transpose(other).rows
       val result = matrix.rows.map(row => otherColumns.map (column =>

@@ -248,7 +248,7 @@ class MainSpec extends Specification {
       m.transpose().rows must beEqualTo(transposed.rows)
     }
 
-    "multiply two two by two matrices" in {
+    "multiply two matrices" in {
       val m1 = ArrayMatrix(Array(
         Array(1, 2),
         Array(3, 4),
@@ -325,8 +325,8 @@ class MainSpec extends Specification {
 //    "add a multiple of a row to another row in a matrix" in { ko}
 //    "determine if a matrix is square" in { ko}
 
-    "calculate create a submatrix by deleting a row and a column of a matrix" in {
-      ArrayMatrixImpl.removeRowAndColumn(matrix, 1, 1) must beEqualTo(Array(
+    "create a submatrix by deleting a row and a column of a matrix" in {
+      ArrayMatrixImpl.removeRowAndColumn(matrix, 1, 1).rows must beEqualTo(Array(
         Array(3.0, 5.0),
         Array(1.0, 3.0)
       ))
@@ -349,8 +349,8 @@ class MainSpec extends Specification {
     "calculate the inverse of a 1x1 matrix" in { ko}
     "calculate the inverse of a 2x2 matrix" in {
       twoByTwoMat.inverse().rows must beEqualTo(Array(
-        Array(1.0, 0.5),
-        Array(2.0, 1.5)
+        Array(1.5, -0.5),
+        Array(-2.0, 1.0)
       ))
     }
     //"calculate the inverse of a 3x3 matrix" in { ko}
