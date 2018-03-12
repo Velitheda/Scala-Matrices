@@ -4,7 +4,7 @@ import MatrixOps._
 
 case class ArrayMatrix(rows: Array[Array[Double]]){
   override def toString: String = {
-    "[" + this.rows.map(row => row.mkString(", ")).mkString("]\n")
+    "\n[" + this.rows.map(row => row.mkString(",")).mkString("]\n[") + "]\n"
   }
 }
 

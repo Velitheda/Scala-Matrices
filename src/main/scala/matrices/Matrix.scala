@@ -13,7 +13,6 @@ trait Matrix[M] {
   // TODO: handle Numeric types other than double
   def function(matrix: M, f: (Double) => Double): M
   def transpose(matrix: M): M
-  //TODO: decide if .equals is enough
   def isEqual(matrix: M, other: M): Boolean
 
   def numRows(matrix: M): Int
@@ -65,6 +64,7 @@ object MatrixOps {
     def -(other: M): M = ops.-(m, other)
 
     def identity(size: Int): M = ops.identity(size)
+    def inverse(): M = ops.inverse(m)
   }
 }
 
