@@ -1,8 +1,12 @@
 package matrices
 
+import spire.math._
+import spire.implicits._
+import spire.algebra._
+
 import MatrixOps._
 
-case class ArrayMatrix(rows: Array[Array[Double]]){
+case class ArrayMatrix(rows: Array[Array[Number]]){
   override def toString: String = {
     "\n[" + this.rows.map(row => row.mkString(",")).mkString("]\n[") + "]\n"
   }
@@ -28,14 +32,14 @@ object ArrayMatrix {
       ArrayMatrix(result)
     }
 
-    def dotProduct(rowMatrix: ArrayMatrix, columnMatrix: ArrayMatrix): Double = {
+    def dotProduct(rowMatrix: ArrayMatrix, columnMatrix: ArrayMatrix): Number = {
       val row = rowMatrix.rows.headOption.getOrElse(Array())
       val column = transpose(columnMatrix).rows.headOption.getOrElse(Array())
       val s = row zip column map { t => t._1 * t._2 }
-      s.sum
+      s.foldLeft(Number.zero)(_ + _)
     }
 
-    def function(matrix: ArrayMatrix, f: (Double) => Double): ArrayMatrix = {
+    def function(matrix: ArrayMatrix, f: (Number) => Number): ArrayMatrix = {
       ArrayMatrix(matrix.rows.map(_.map(f)))
     }
 
@@ -79,13 +83,13 @@ object ArrayMatrix {
       setRow(rowASet, startIndex, rowB)
     }
 
-    def multiplyRow(matrix: ArrayMatrix, rowIndex: Int, multiplier: Double): ArrayMatrix = {
+    def multiplyRow(matrix: ArrayMatrix, rowIndex: Int, multiplier: Number): ArrayMatrix = {
       val multipliedRow = function(getRow(matrix, rowIndex), (e) => e * multiplier)
       setRow(matrix, rowIndex, multipliedRow)
     }
 
     // TODO: rename
-    def addMultipliedRowToOtherRow(matrix: ArrayMatrix, startIndex: Int, destinationIndex: Int, multiplier: Double): ArrayMatrix = {
+    def addMultipliedRowToOtherRow(matrix: ArrayMatrix, startIndex: Int, destinationIndex: Int, multiplier: Number): ArrayMatrix = {
       val rowA = function(getRow(matrix, startIndex), (e) => e * multiplier)
       val rowOther = getRow(matrix, destinationIndex)
       setRow(setRow(matrix, destinationIndex, rowA), startIndex, rowOther)
@@ -94,9 +98,9 @@ object ArrayMatrix {
     def removeRow(matrix: ArrayMatrix, rowIndex: Int): ArrayMatrix =
       ArrayMatrix(matrix.rows.view.zipWithIndex.filter(_._2 != rowIndex).map(_._1).toArray)
 
-    def getElement(matrix: ArrayMatrix, rowIndex: Int, columnIndex: Int): Double = matrix.rows(rowIndex)(columnIndex)
+    def getElement(matrix: ArrayMatrix, rowIndex: Int, columnIndex: Int): Number = matrix.rows(rowIndex)(columnIndex)
 
-    def det(matrix: ArrayMatrix): Double = {
+    def det(matrix: ArrayMatrix): Number = {
       if(isOneByOne(matrix)) {
         matrix.rows(0)(0)
       }
@@ -106,7 +110,7 @@ object ArrayMatrix {
         // cofactor expansion along the first row
         matrix.rows.head.view.zipWithIndex.map { case(e, i) =>
           getElement(matrix, 0, i) * det(removeRowAndColumn(matrix, 0, i)) * cofactorSign(0, i)
-        }.sum
+        }.foldLeft(Number.zero)(_ + _)
       }
     }
 
@@ -124,7 +128,7 @@ object ArrayMatrix {
 
     def isSquare(matrix: ArrayMatrix): Boolean = numRows(matrix) == numColumns(matrix)
 
-    def twoByTwoDet(matrix: ArrayMatrix): Double = {
+    def twoByTwoDet(matrix: ArrayMatrix): Number = {
       getElement(matrix, 0, 0) * getElement(matrix, 1, 1) - getElement(matrix, 1, 0) * getElement(matrix, 0, 1)
     }
 

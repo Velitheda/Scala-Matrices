@@ -1,6 +1,11 @@
 package matrices
 
 import org.specs2.mutable._
+
+import spire.math._
+import spire.implicits._
+import spire.algebra._
+
 import MatrixOps._
 import matrices.ArrayMatrix.ArrayMatrixImpl
 import org.scalacheck.Properties
@@ -8,18 +13,23 @@ import org.scalacheck.Prop.{BooleanOperators, forAll}
 import org.scalacheck.Gen
 
 object MatrixSpecification extends Properties("Matrix") {
-  val number = Gen.choose(-100.0, 100.0)
+  val number = Gen.choose(-100, 100)
   val integer = Gen.choose(-100, 100)
+
+  val spireNumber: Gen[Number] = for {
+    n <- integer
+  } yield {
+    Number(n)
+  }
 
   //Tests start failing at matrix sizes of 8x8 due to problems with very large double calculations losing accuracy
   val listNumber = Gen.choose(1, 7)
-  def row(n: Int) = Gen.containerOfN[Array, Double](n, number)
+  def row(n: Int) = Gen.containerOfN[Array, Number](n, spireNumber)
 
   def matrixFactory(rowNum: Int, colNum: Int): Gen[ArrayMatrix] = for {
-    s <- Gen.containerOfN[Array, Array[Double]](rowNum, row(colNum))
+    s <- Gen.containerOfN[Array, Array[Number]](rowNum, row(colNum))
   } yield {
-    val i = s.map(r => r.map(_.toInt.toDouble))
-    new ArrayMatrix(i)
+    new ArrayMatrix(s)
   }
 
   def matrixListFactory(num: Int):Gen[List[ArrayMatrix]] = for {
@@ -29,10 +39,9 @@ object MatrixSpecification extends Properties("Matrix") {
   } yield s
 
   def squareMatrix(size: Int): Gen[ArrayMatrix] = for {
-    s <- Gen.containerOfN[Array, Array[Double]](size, row(size))
+    s <- Gen.containerOfN[Array, Array[Number]](size, row(size))
   } yield {
-    val i = s.map(r => r.map(_.toInt.toDouble))
-    new ArrayMatrix(i)
+    new ArrayMatrix(s)
   }
 
   def squareMatrixList(num: Int): Gen[List[ArrayMatrix]] = for {
@@ -76,7 +85,7 @@ object MatrixSpecification extends Properties("Matrix") {
 
   property("the order a scalar is applied to matrix addition does not matter") =
     forAll(matrixFactory(3, 2), matrixFactory(3, 2), integer) { case(a, b, n) =>
-      val f = (e: Double) => e * n
+      val f = (e: Number) => e * n
       (a.function(f) * b).isEqual(a * b.function(f))
     }
 
@@ -101,7 +110,7 @@ object MatrixSpecification extends Properties("Matrix") {
 
   property("the order a scalar is applied to matrix multiplication does not matter") =
     forAll(matrixFactory(3, 2), matrixFactory(2, 3), number) { case(a, b, n) =>
-      val f = (e: Double) => e * n.toInt
+      val f = (e: Number) => e * n.toInt
       (a.function(f) * b).isEqual(a * b.function(f))
     }
 
@@ -123,7 +132,7 @@ object MatrixSpecification extends Properties("Matrix") {
 
   property("A matrix can be transposed before or after being multiplied by a scalar") =
     forAll(matrixListFactory(1), integer) { case(List(a), n) =>
-      val f = (e: Double) => e * n
+      val f = (e: Number) => e * n
       a.transpose().function(f).isEqual(a.function(f).transpose())
     }
 
@@ -168,9 +177,9 @@ object MatrixSpecification extends Properties("Matrix") {
 
   //(kA)^−1 = (k^−1)(A^−1) for nonzero scalar k
   property("the inverse of a nonzero scalar times a matrix is the same as one over the scalar times the inverse of a matrix") =
-    forAll(invertableMatrix(), Gen.choose(-100.0, 100.0) suchThat(_ != 0.0)) { case (a, n) =>
-      a.function((e: Double) => e * n).inverse().isEqual(
-        a.inverse().function((e: Double) => e * (1 / n))
+    forAll(invertableMatrix(), integer suchThat(_ != 0.0)) { case (a, n) =>
+      a.function((e: Number) => e * n).inverse().isEqual(
+        a.inverse().function((e: Number) => e * (1 / n))
       )
     }
 
@@ -178,6 +187,17 @@ object MatrixSpecification extends Properties("Matrix") {
     forAll(invertableMatrix()) { case (a) =>
       val det = a.det()
       a.inverse().det() == (1 / a.det())
+    }
+
+  property("handle 20 by 20 matrices") =
+    forAll(squareMatrix(20), squareMatrix(20), squareMatrix(20)) { case (a, b, c) =>
+      ((a * b) * c).isEqual(a * (b * c))
+    }
+
+  property("handle 20 by 20 matrices with scalar division") =
+    forAll(squareMatrix(20), integer) { case (a, n) =>
+      val f = (e: Number) => e / n
+      a.transpose().function(f).isEqual(a.function(f).transpose())
     }
 
 }
@@ -222,7 +242,7 @@ class MainSpec extends Specification {
 
     "apply a simple function to each element in the matrix" in {
       val m = new ArrayMatrix(Array(Array(1, 2)))
-      val addFive = (a: Double) => a + 5.0
+      val addFive = (a: Number) => a + 5.0
       m.function(addFive).rows must beEqualTo(Array(Array(6, 7)))
     }
 
@@ -321,7 +341,14 @@ class MainSpec extends Specification {
     "get an element from a matrix" in {
       matrix.getElement(1, 2) must beEqualTo(8.0)
     }
-//    "multiply a row in a matrix by a scalar" in { ko}
+
+    "multiply a row in a matrix by a scalar" in {
+      matrix.multiplyRow(1, 3).isEqual(ArrayMatrix(Array(
+        Array(3.0, 4.0, 5.0),
+        Array(18.0, 21.0, 24.0),
+        Array(1.0, 2.0, 3.0)
+      )))
+    }
 //    "add a multiple of a row to another row in a matrix" in { ko}
 //    "determine if a matrix is square" in { ko}
 

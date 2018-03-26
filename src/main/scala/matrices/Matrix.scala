@@ -1,17 +1,20 @@
 package matrices
 
+import spire.math._
+import spire.implicits._
+import spire.algebra._
 
 trait Matrix[M] {
   // Should this be 'apply a function to corresponding elements on two matrices'?
   def add(matrix: M, other: M): M
-  def -(m: M, other: M): M = add(m, function(other, (e: Double) => e * -1))
+  def -(m: M, other: M): M = add(m, function(other, (e) => e * -1))
   def multiply(matrix: M, other: M): M
 
   // TODO: Validate dimensions
-  def dotProduct(matrix: M, other: M): Double
+  def dotProduct(matrix: M, other: M): Number
 
-  // TODO: handle Numeric types other than double
-  def function(matrix: M, f: (Double) => Double): M
+  // TODO: handle Numeric types other than Number
+  def function(matrix: M, f: (Number) => Number): M
   def transpose(matrix: M): M
   def isEqual(matrix: M, other: M): Boolean
 
@@ -28,24 +31,25 @@ trait Matrix[M] {
   def removeColumn(matrix: M, columnIndex: Int): M = transpose(removeRow(transpose(matrix), columnIndex))
 
   protected def swapRows(matrix: M, startIndex: Int, destinationIndex: Int): M
-  protected def multiplyRow(matrix: M, rowIndex: Int, multiplier: Double): M
+  def multiplyRow(matrix: M, rowIndex: Int, multiplier: Number): M
 
-  def getElement(matrix: M, rowIndex: Int, columnIndex: Int): Double
+  def getElement(matrix: M, rowIndex: Int, columnIndex: Int): Number
 
   def cofactorMatrix(matrix: M): M
   def adjoint(matrix: M): M = transpose(cofactorMatrix(matrix))
   def inverse(matrix: M): M = function(adjoint(matrix), e => e * (1 / det(matrix)))
 
-  def det(matrix: M): Double
+  def det(matrix: M): Number
   def identity(size :Int): M
 }
 
 object MatrixOps {
   implicit class ExposedMatrixOps[M](m: M)(implicit ops: Matrix[M]) {
     def +(other: M): M = ops.add(m, other)
+    def -(other: M): M = ops.-(m, other)
     def *(other: M): M = ops.multiply(m, other)
-    def dotProduct(other: M): Double = ops.dotProduct(m, other)
-    def function(f: (Double) => Double): M = ops.function(m, f)
+    def dotProduct(other: M): Number = ops.dotProduct(m, other)
+    def function(f: (Number) => Number): M = ops.function(m, f)
     def transpose(): M = ops.transpose(m)
     def isEqual(other: M): Boolean = ops.isEqual(m, other)
 
@@ -58,10 +62,12 @@ object MatrixOps {
     def removeRow(rowIndex: Int): M = ops.removeRow(m, rowIndex)
     def removeColumn(columnIndex: Int): M = ops.removeColumn(m, columnIndex)
 
-    def getElement(rowIndex: Int, columnIndex: Int): Double = ops.getElement(m, rowIndex, columnIndex)
+    def multiplyRow(rowIndex: Int, multiplier: Number): M = ops.multiplyRow(m, rowIndex, multiplier)
 
-    def det(): Double = ops.det(m)
-    def -(other: M): M = ops.-(m, other)
+
+    def getElement(rowIndex: Int, columnIndex: Int): Number = ops.getElement(m, rowIndex, columnIndex)
+
+    def det(): Number = ops.det(m)
 
     def identity(size: Int): M = ops.identity(size)
     def inverse(): M = ops.inverse(m)

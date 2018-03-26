@@ -11,3 +11,5 @@ libraryDependencies ++= Seq("org.specs2" %% "specs2-core" % "4.0.0" % "test")
 scalacOptions in Test ++= Seq("-Yrangepos")
 
 libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.13.4" % "test"
+
+libraryDependencies += "org.typelevel" %% "spire" % "0.14.1"
