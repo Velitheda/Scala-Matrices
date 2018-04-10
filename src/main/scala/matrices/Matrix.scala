@@ -4,17 +4,21 @@ import spire.math._
 import spire.implicits._
 import spire.algebra._
 
-trait Matrix[M] {
+trait Matrixable {
+  type Num <: Number
+  implicit def numberOps: Numeric[Num]
+}
+
+trait Matrix[M <: Matrixable] {
   // Should this be 'apply a function to corresponding elements on two matrices'?
   def add(matrix: M, other: M): M
-  def -(m: M, other: M): M = add(m, function(other, (e) => e * -1))
+  def -(m: M, other: M)(implicit ev: Numeric[M#Num]): M = add(m, function(other, (e) => ev.times(e, ev.multiplicative.empty)))
   def multiply(matrix: M, other: M): M
 
   // TODO: Validate dimensions
-  def dotProduct(matrix: M, other: M): Number
+  def dotProduct(matrix: M, other: M): M#Num
 
-  // TODO: handle Numeric types other than Number
-  def function(matrix: M, f: (Number) => Number): M
+  def function(matrix: M, f: (M#Num) => M#Num): M
   def transpose(matrix: M): M
   def isEqual(matrix: M, other: M): Boolean
 
@@ -31,25 +35,29 @@ trait Matrix[M] {
   def removeColumn(matrix: M, columnIndex: Int): M = transpose(removeRow(transpose(matrix), columnIndex))
 
   protected def swapRows(matrix: M, startIndex: Int, destinationIndex: Int): M
-  def multiplyRow(matrix: M, rowIndex: Int, multiplier: Number): M
+  def multiplyRow(matrix: M, rowIndex: Int, multiplier: M#Num): M
 
-  def getElement(matrix: M, rowIndex: Int, columnIndex: Int): Number
+  def getElement(matrix: M, rowIndex: Int, columnIndex: Int): M#Num
 
   def cofactorMatrix(matrix: M): M
   def adjoint(matrix: M): M = transpose(cofactorMatrix(matrix))
-  def inverse(matrix: M): M = function(adjoint(matrix), e => e * (1 / det(matrix)))
 
-  def det(matrix: M): Number
+  def inverse(matrix: M)(implicit ev: Numeric[M#Num]): M = {
+    val detInverse = ev.multiplicative.inverse(det(matrix))
+    function(adjoint(matrix), e => ev.times(e, detInverse))
+  }
+
+  def det(matrix: M): M#Num
   def identity(size :Int): M
 }
 
 object MatrixOps {
-  implicit class ExposedMatrixOps[M](m: M)(implicit ops: Matrix[M]) {
+  implicit class ExposedMatrixOps[M <: Matrixable](m: M)(implicit ops: Matrix[M]) {
     def +(other: M): M = ops.add(m, other)
-    def -(other: M): M = ops.-(m, other)
+    def -(other: M)(implicit ev: Numeric[M#Num]): M = ops.-(m, other)
     def *(other: M): M = ops.multiply(m, other)
-    def dotProduct(other: M): Number = ops.dotProduct(m, other)
-    def function(f: (Number) => Number): M = ops.function(m, f)
+    def dotProduct(other: M): M#Num = ops.dotProduct(m, other)
+    def function(f: (M#Num) => M#Num): M = ops.function(m, f)
     def transpose(): M = ops.transpose(m)
     def isEqual(other: M): Boolean = ops.isEqual(m, other)
 
@@ -62,15 +70,15 @@ object MatrixOps {
     def removeRow(rowIndex: Int): M = ops.removeRow(m, rowIndex)
     def removeColumn(columnIndex: Int): M = ops.removeColumn(m, columnIndex)
 
-    def multiplyRow(rowIndex: Int, multiplier: Number): M = ops.multiplyRow(m, rowIndex, multiplier)
+    def multiplyRow(rowIndex: Int, multiplier: M#Num): M = ops.multiplyRow(m, rowIndex, multiplier)
 
 
-    def getElement(rowIndex: Int, columnIndex: Int): Number = ops.getElement(m, rowIndex, columnIndex)
+    def getElement(rowIndex: Int, columnIndex: Int): M#Num = ops.getElement(m, rowIndex, columnIndex)
 
-    def det(): Number = ops.det(m)
+    def det(): M#Num = ops.det(m)
 
     def identity(size: Int): M = ops.identity(size)
-    def inverse(): M = ops.inverse(m)
+    def inverse()(implicit ev: Numeric[M#Num]): M = ops.inverse(m)
   }
 }
 

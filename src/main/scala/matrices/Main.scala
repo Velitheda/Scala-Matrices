@@ -8,7 +8,7 @@ object Main {
     println("hi")
   }
 
-  val m = new ArrayMatrix(Array(Array(1)))
+  val m = new ArrayMatrix[Int](Array(Array(1)))
   m + m
 
 
