@@ -101,6 +101,9 @@ object ArrayMatrix {
     def getElement(matrix: ArrayMatrix, rowIndex: Int, columnIndex: Int): Number = matrix.rows(rowIndex)(columnIndex)
 
     def det(matrix: ArrayMatrix): Number = {
+      if(isEmptyMatrix(matrix)) {
+        return 1
+      }
       if(isOneByOne(matrix)) {
         matrix.rows(0)(0)
       }
@@ -133,7 +136,6 @@ object ArrayMatrix {
     }
 
     def removeRowAndColumn(matrix: ArrayMatrix, rowIndex: Int, columnIndex: Int): ArrayMatrix = {
-      // TODO handle 1x1 or empty
       removeRow(removeColumn(matrix, columnIndex), rowIndex)
     }
 

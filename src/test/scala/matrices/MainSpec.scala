@@ -137,9 +137,9 @@ object MatrixSpecification extends Properties("Matrix") {
     }
 
   //Determinants
-  property("The determinant of a matrix with a zero row or column is 0") =
+  property("The determinant of an empty matrix is 1") =
     forAll(matrixFactory(0, 0)) { case(a) =>
-      a.det() == 0
+      a.det() == 1
     }
 
   property("The determinant of a 1 by 1 matrix is its only element") =
@@ -290,7 +290,6 @@ class MainSpec extends Specification {
         Array(1, 2, 3)
       ))
       val v2 = ArrayMatrix(Array(
-        //Array(2, 3, 4)
         Array(1), Array(2), Array(3)
       ))
       v1.dotProduct(v2) must beEqualTo(14)
@@ -338,6 +337,18 @@ class MainSpec extends Specification {
         Array(1.0, 2.0)
       ))
     }
+
+    "remove a row or column from a one by one matrix" in {
+      oneByOneMat.removeRow(0).rows must beEqualTo(Array())
+      oneByOneMat.removeColumn(0).rows must beEqualTo(Array())
+    }
+
+    "remove a row or column from a zero matrix" in {
+      val zeroMatrix = ArrayMatrix(Array())
+      zeroMatrix.removeRow(0).rows must beEqualTo(Array())
+      zeroMatrix.removeColumn(0).rows must beEqualTo(Array())
+    }
+
     "get an element from a matrix" in {
       matrix.getElement(1, 2) must beEqualTo(8.0)
     }
@@ -349,8 +360,8 @@ class MainSpec extends Specification {
         Array(1.0, 2.0, 3.0)
       )))
     }
-//    "add a multiple of a row to another row in a matrix" in { ko}
-//    "determine if a matrix is square" in { ko}
+    "add a multiple of a row to another row in a matrix" in { ko}
+    "determine if a matrix is square" in { ko }
 
     "create a submatrix by deleting a row and a column of a matrix" in {
       ArrayMatrixImpl.removeRowAndColumn(matrix, 1, 1).rows must beEqualTo(Array(
@@ -362,7 +373,13 @@ class MainSpec extends Specification {
       ArrayMatrixImpl.cofactorSign(1, 1) must beEqualTo (1)
       ArrayMatrixImpl.cofactorSign(1, 2) must beEqualTo (-1)
     }
-    "calculate the matrix of cofactors" in { ko}
+    "calculate the matrix of cofactors" in {
+      matrix.cofactorMatrix().rows must beEqualTo(Array(
+        Array(5.0, -10.0, 5.0),
+        Array(-2.0, 4.0, -2.0),
+        Array(-3.0, 6.0, -3.0)
+      ))
+    }
 
     "calculate the determinant of a 1x1 matrix" in {
       oneByOneMat.det must beEqualTo(1.0)
@@ -373,15 +390,17 @@ class MainSpec extends Specification {
     "calculate the determinant of a 3x3 matrix" in {
       matrix.det must beEqualTo(0.0)
     }
-    "calculate the inverse of a 1x1 matrix" in { ko}
+    "calculate the inverse of a 1x1 matrix" in {
+      oneByOneMat.inverse().rows must beEqualTo(Array(Array(1.0)))
+    }
     "calculate the inverse of a 2x2 matrix" in {
       twoByTwoMat.inverse().rows must beEqualTo(Array(
         Array(1.5, -0.5),
         Array(-2.0, 1.0)
       ))
     }
-    //"calculate the inverse of a 3x3 matrix" in { ko}
-    //"calculate the inverse of a 4x4 matrix" in { ko}
+    "calculate the inverse of a 3x3 matrix" in { ko }
+    "calculate the inverse of a 4x4 matrix" in { ko }
 
   }
 }

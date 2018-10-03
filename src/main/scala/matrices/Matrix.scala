@@ -2,7 +2,6 @@ package matrices
 
 import spire.math._
 import spire.implicits._
-import spire.algebra._
 
 trait Matrix[M] {
   // Should this be 'apply a function to corresponding elements on two matrices'?
@@ -68,6 +67,7 @@ object MatrixOps {
     def getElement(rowIndex: Int, columnIndex: Int): Number = ops.getElement(m, rowIndex, columnIndex)
 
     def det(): Number = ops.det(m)
+    def cofactorMatrix(): M = ops.cofactorMatrix(m)
 
     def identity(size: Int): M = ops.identity(size)
     def inverse(): M = ops.inverse(m)
